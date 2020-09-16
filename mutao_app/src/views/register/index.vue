@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <header class="header">注册头部</header>
+    <header class="header">注册账号</header>
     <div class="content">
       <van-field
         v-model="tel"

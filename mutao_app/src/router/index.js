@@ -8,7 +8,7 @@ Vue.use(Router)
 export const constantRouterMap = [
   {path:'/', redirect:'login'},
   {path: '/login', component: () => import('@/views/login/index'), hidden: true},
-  {path: '/login', component: () => import('@/views/login/index'), hidden: true},
+  {path: '/register', component: () => import('@/views/register/index'), hidden: true},
   {
     path: '',
     component: Layout,
@@ -24,24 +24,20 @@ export const constantRouterMap = [
 export const asyncRouterMap = [
   ]
 
-// 导航守卫
-// 使用 router.beforeEach 注册一个全局前置守卫，判断用户是否登陆
-router.beforeEach((to, from, next) => {
-  if (to.path === '/login') {
-    next();
-  } else {
-    let token = localStorage.getItem('Authorization');
 
-    if (token === null || token === '') {
-      next('/login');
-    } else {
-      next();
-    }
-  }
-});
 
-export default new Router({
-  mode: 'history', //后端支持可开
-  scrollBehavior: () => ({y: 0}),
+const createRouter = () => new Router({
+  mode: 'history', // require service support
+  scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
+
+const router = createRouter()
+
+// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+export function resetRouter() {
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher // reset router
+}
+
+export default router

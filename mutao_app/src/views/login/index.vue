@@ -177,7 +177,7 @@
               this.loading = false;
               setCookie("username", this.loginForm.username, 15);
               setCookie("password", this.loginForm.password, 15);
-              this.$router.push({path: '/'})
+              this.$router.push({path: ''})
             }).catch(() => {
               this.loading = false
             })
