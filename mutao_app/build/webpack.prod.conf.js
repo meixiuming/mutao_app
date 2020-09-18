@@ -7,12 +7,12 @@ const merge = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssTextPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const { VueLoaderPlugin } = require('vue-loader')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-const env = require('../config/prod.env')
+const env = process.env.NODE_ENV === 'testing'
+  ? require('../config/test.env')
+  : require('../config/prod.env')
 
 const webpackConfig = merge(baseWebpackConfig, {
   mode: 'production',
@@ -27,45 +27,35 @@ const webpackConfig = merge(baseWebpackConfig, {
   output: {
     path: config.build.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
-    chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
+    // chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   optimization: {
     splitChunks: {
+      chunks: 'async',
+      name: true,
       cacheGroups: {
+        common: {
+          name: 'common',
+          chunks: 'initial',
+          minChunks: 2
+        },
         vendor: {
-          test: /[\\/]node_modules[\\/]/,
           name: 'vendor',
+          test: /[\\/]node_modules[\\/]/,
           chunks: 'all'
-        },
-        manifest: {
-          name: 'manifest',
-          minChunks: Infinity
-        },
+        }
       }
     },
+    // minimize: false
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
-    new VueLoaderPlugin(),
     new webpack.DefinePlugin({
       'process.env': env
     }),
-    new UglifyJsPlugin({
-      uglifyOptions: {
-        compress: {
-          warnings: false
-        }
-      },
-      sourceMap: config.build.productionSourceMap,
-      parallel: true
-    }),
     // extract css into its own file
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: utils.assetsPath('css/[name].[contenthash:12].css'),
-      // chunkFilename: "[id].css"
-      allChunks: true,
+    new MiniCssTextPlugin({
+      filename: utils.assetsPath('css/[name].[contenthash].css')
     }),
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
@@ -78,7 +68,9 @@ const webpackConfig = merge(baseWebpackConfig, {
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
-      filename: config.build.index,
+      filename: process.env.NODE_ENV === 'testing'
+        ? 'index.html'
+        : config.build.index,
       template: 'index.html',
       inject: true,
       minify: {
@@ -91,19 +83,18 @@ const webpackConfig = merge(baseWebpackConfig, {
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
     }),
-    // keep module.id stable when vendor modules does not change
-    new webpack.HashedModuleIdsPlugin(),
-    // enable scope hoisting
-    new webpack.optimize.ModuleConcatenationPlugin(),
-    // split vendor js into its own file
 
+    // keep module.id stable when vendor modules does not change
+    // new webpack.HashedModuleIdsPlugin(),
+   
     // copy custom static assets
-    new CopyWebpackPlugin({
-      patterns: [
-        { from: path.join(__dirname,'../src/assets'),
-          to: 'assets' }
-      ],
-    })
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, '../static'),
+        to: config.build.assetsSubDirectory,
+        ignore: ['.*']
+      }
+    ])
   ]
 })
 

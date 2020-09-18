@@ -6,10 +6,10 @@ const merge = require('webpack-merge')
 const path = require('path')
 const baseWebpackConfig = require('./webpack.base.conf')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const MiniCssTextPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
-const { VueLoaderPlugin } = require('vue-loader')
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -17,7 +17,12 @@ const PORT = process.env.PORT && Number(process.env.PORT)
 const devWebpackConfig = merge(baseWebpackConfig, {
   mode: 'development',
   module: {
-    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
+    rules: utils.styleLoaders({ 
+      hotReload: true, 
+      extract: true, 
+      sourceMap: config.dev.cssSourceMap, 
+      usePostCSS: true 
+    })
   },
   // cheap-module-eval-source-map is faster for development
   devtool: config.dev.devtool,
@@ -30,7 +35,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         { from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index.html') },
       ],
     },
-    disableHostCheck: true,
     hot: true,
     contentBase: false, // since we use CopyWebpackPlugin.
     compress: true,
@@ -48,13 +52,13 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     }
   },
   plugins: [
-    new VueLoaderPlugin(),
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
-    new webpack.NoEmitOnErrorsPlugin(),
+    new MiniCssTextPlugin({
+      filename: utils.assetsPath('[name].css')
+    }),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       filename: 'index.html',
@@ -62,12 +66,13 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       inject: true
     }),
     // copy custom static assets
-    new CopyWebpackPlugin({
-      patterns: [
-        { from: path.join(__dirname,'../src/assets'),
-          to: 'assets' }
-      ],
-    })
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, '../static'),
+        to: config.dev.assetsSubDirectory,
+        ignore: ['.*']
+      }
+    ])
   ]
 })
 
@@ -77,6 +82,7 @@ module.exports = new Promise((resolve, reject) => {
     if (err) {
       reject(err)
     } else {
+      // console.log(devWebpackConfig.module.rules)
       // publish the new Port, necessary for e2e tests
       process.env.PORT = port
       // add port to devServer config

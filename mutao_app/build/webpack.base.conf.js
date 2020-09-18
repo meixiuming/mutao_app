@@ -2,22 +2,11 @@
 const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
-const vueLoaderConfig = require('./vue-loader.conf')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
-
-const createLintingRule = () => ({
-  test: /\.(js|vue)$/,
-  loader: 'eslint-loader',
-  enforce: 'pre',
-  include: [resolve('src'), resolve('test')],
-  options: {
-    formatter: require('eslint-friendly-formatter'),
-    emitWarning: !config.dev.showEslintErrorsInOverlay
-  }
-})
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
@@ -26,7 +15,7 @@ module.exports = {
   },
   output: {
     path: config.build.assetsRoot,
-    filename: '[name].js',
+    filename: utils.assetsPath('[name].js'),
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
@@ -43,7 +32,14 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: vueLoaderConfig
+        options: {
+          transformAssetUrls: {
+            video: ['src', 'poster'],
+            source: 'src',
+            img: 'src',
+            image: 'xlink:href'
+          }
+        }
       },
       {
         test: /\.js$/,
@@ -76,6 +72,9 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    new VueLoaderPlugin()
+  ],
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
     // source contains it (although only uses it if it's native).
