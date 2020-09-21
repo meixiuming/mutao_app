@@ -1,0 +1,86 @@
+
+1、npm WARN deprecated extract-text-webpack-plugin@3.0.2: Deprecated. Please use https://github.com/webpack-contrib/mini-css-extract-plugin
+解决方式：npm install --save-dev extract-text-webpack-plugin@next
+2、npm WARN deprecated browserslist@2.11.3: Browserslist 2 could fail on reading Browserslist >3.0 config used in other tools.
+npm WARN deprecated bfj-node4@5.3.1: Switch to the `bfj` package for fixes and new features!
+npm WARN deprecated core-js@2.6.11: core-js@<3 is no longer maintained and not recommended for usage due to the number of issues. Please, upgrade your dependencies to the actual version of core-js@3.
+npm WARN deprecated browserslist@1.7.7: Browserslist 2 could fail on reading Browserslist >3.0 config used in other tools.
+npm WARN deprecated chokidar@2.1.8: Chokidar 2 will break on node v14+. Upgrade to chokidar 3 with 15x less dependencies.
+npm WARN deprecated fsevents@1.2.13: fsevents 1 will break on node v14+ and could be using insecure binaries. Upgrade to fsevents 2.
+npm WARN deprecated resolve-url@0.2.1: https://github.com/lydell/resolve-url#deprecated
+npm WARN deprecated urix@0.1.0: Please see https://github.com/lydell/urix#deprecated
+
+
+
+3、如果 npm audit fix，之后还是有问题，可能是不能自动 fix，尽量不要 --force 强制 fix。
+
+可以先 npm update，然后 npm audit 查看详情，再手动安装相关库。
+
+4、nvalid options object. Copy Plugin has been initialized using an options object that does not match the API schema
+.
+ - options[0] misses the property 'patterns'. Should be:
+解决方法： new CopyWebpackPlugin(
+      {
+        patterns: [
+          { from: path.join(__dirname,'../src/assets/'),
+            to: config.dev.assetsSubDirectory, }
+        ]
+      }
+    )
+
+
+5、ValidationError: Invalid options object. Copy Plugin has been initialized using an options object that does not match the API schema.
+ - options.patterns[0] has an unknown property 'ignore'. These properties are valid:
+
+解决方法：删掉  上面patterns内的'ignore'属性
+
+6、TypeError: compilation.mainTemplate.applyPluginsWaterfall is not a function
+
+解决方法：npm install html-webpack-plugin@next --save-dev
+
+
+7、Module build failed (from ./node_modules/vue-loader/index.js):
+TypeError: Cannot read property 'vue' of undefined
+	
+解决方法：	升级vue——loader版本
+	
+8、 @ ./src/main.js 4:0-24 13:21-24
+
+	 error  in ./src/App.vue?vue&type=style&index=0&lang=css&
+
+	Module parse failed: Unexpected character '#' (15:0)
+	File was processed with these loaders:
+	 * ./node_modules/vue-loader/lib/index.js
+	You may need an additional loader to handle the result of these loaders.
+	|
+	|
+	> #app {
+	|   font-family: 'Avenir', Helvetica, Arial, sans-serif;
+	|   -webkit-font-smoothing: antialiased;
+	
+解决方法：升级vue-style-loader
+
+9、BaseClient.js?e917:12 Uncaught TypeError: Cannot assign to read only property 'exports' of object '#<Object>'
+    at Module.eval (BaseClient.js?e917:12)
+    at eval (BaseClient.js:42)
+    at Module../node_modules/webpack-dev-server/client/clients/BaseClient.js (app.js:2061)
+    at __webpack_require__ (app.js:727)
+    at fn (app.js:101)
+    at Module.eval (SockJSClient.js?810f:26)
+    at eval (SockJSClient.js:137)
+    at Module../node_modules/webpack-dev-server/client/clients/SockJSClient.js (app.js:2073)
+    at __webpack_require__ (app.js:727)
+    at fn (app.js:101)
+	
+解决方法：{
+        test: /\.js$/,
+        loader: 'babel-loader',
+        // include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')],
+        include: [resolve('src'), resolve('test')]
+},
+
+
+
+
+
+
