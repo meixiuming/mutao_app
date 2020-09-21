@@ -1,0 +1,84 @@
+1、npm install -g @vue/cli
+     npm install -g @vue/cli-init
+2、安装webpack
+	全局安装
+	npm install -g webpack
+	npm install --g webpack-cli
+	本地安装
+	npm install --save-dev webpack
+	npm install --save-dev webpack-cli
+
+	删除全局webpack-cli
+	webpack4.x开始官方文档是说要安装cli所以如果的在用4.+就需要卸载cli
+
+	npm uninstall -g webpack-cli
+	# 注释给我这种小白提供参考
+	# 卸载 uninstall  可以简写成 un  
+	# 全局 -g 的完整写法是 --global
+	# 现在问题来了这样真的卸载了webpack-cli吗？
+	# 答案是没有。到现在为止我还没有发现那个webpack-cli是全局安装的，至少官方文档没看到。
+	# 那就看下面怎么删除局部webpack-cli
+	删除本地（局部）webpack-cli
+	npm uninstall webpack-cli
+	
+	# 仔细看你会发现去掉全局参数 -g
+	# 这时候你的命令行会快速滚动一些删除信息。
+	# webpack-cli删除成功
+	删除全局webpack
+	npm uninstall -g webpack
+	# 这个注释还是给小白看的
+	# 为什么要局部全局删除webpack
+	# 因为你可能在安装webpack时不确定自己是全局安装
+	# 还是本地安装，所以建议先执行全局删除命令
+	# 然后在执行下面的本地删除命令
+	删除本地webpack
+	npm un webpack
+	# 这时候小白的webpack是删除完成了
+	# 还没完看下面怎么说
+	检查webpack残余文件
+	ls
+	# 用ls命令查看一下是否有这几个文件
+	# node_modules
+	# package-lock.json
+	# package.json
+	# 有是最好的，如果没有那你可能还没找到自己本地安装webpack的准确位置
+	# 有时候我也找不到了
+	# 现在说有的事
+	rm -rf node_modules package-lock.json package.json
+	# 上面这行命令是删除这些文件的意思
+	# 同学你的webpack 彻底删除干净了
+	# 但是小白一定要好好去了解一下 rm 和 rm -rf 的区别，在这里我不科普怕说错
+
+3、创建web项目
+    vue init webpack web
+    cd wbe
+	有问题时，先清理缓存，删掉重新下载
+         npm cache clean --force
+	npm  install
+4、安装
+	npm i element-ui -S
+	npm install axios -S
+	npm i js-cookie
+5、重置标签样式
+	npm i normalize.css -S
+	npm install css-loader style-loader -S
+	main.js中全局引入normalize.css
+	import "normalize.css";
+6、全局注册进度条
+	npm install nprogress --save
+	import '@/permission'
+7、缺少插件所以不能识别svg安装插件
+	npm install svg-sprite-loader --save
+8、模糊查询
+	npm install fuse-box --save
+	npm install --save fuse.js
+9、vue使用全屏
+	npm install --save screenfull
+10、建移动端  安装Vant
+	npm i vant -S
+11、安装vuex
+	npm install vuex --save
+12、安装样式
+	npm install --save-dev sass-loader node-sass	
+13、安装进度条：
+	npm i progress-bar-webpack-plugin
