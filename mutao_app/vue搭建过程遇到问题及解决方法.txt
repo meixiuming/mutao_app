@@ -79,26 +79,6 @@ TypeError: Cannot read property 'vue' of undefined
         include: [resolve('src'), resolve('test')]
 },
 
-10、 ERROR  Failed to compile with 1 errors                                                                                                       4:45:08 ├F10: PM┤
-
-	 error  in ./src/styles/index.scss
-
-	Module parse failed: Unexpected character '@' (1:0)
-	You may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#load
-	ers
-	> @import './variables.scss';
-	| @import './mixin.scss';
-	| @import './transition.scss';
-	
-解决方式：在这里webpack.base.conf.js增加
-			  {
-        test: /\.scss$/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-          'sass-loader'
-        ]
-      },
 
 
 
