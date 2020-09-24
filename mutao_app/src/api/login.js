@@ -2,19 +2,12 @@ import request from '@/utils/request'
 
 export function login(username, password) {
   return request({
-    url: '/auth/login',
+    url: '/admin/login',
     method: 'post',
     data: {
       username,
       password
     }
-  })
-}
-export function register(data) {
-  return request({
-    url: '/auth/register',
-    method: 'post',
-    data: data
   })
 }
 
@@ -42,7 +35,7 @@ export function fetchList(params) {
 
 export function createAdmin(data) {
   return request({
-    url: '/auth/register',
+    url: '/admin/register',
     method: 'post',
     data: data
   })

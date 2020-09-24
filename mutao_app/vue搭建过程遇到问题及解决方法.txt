@@ -41,9 +41,9 @@ npm WARN deprecated urix@0.1.0: Please see https://github.com/lydell/urix#deprec
 
 7、Module build failed (from ./node_modules/vue-loader/index.js):
 TypeError: Cannot read property 'vue' of undefined
-	
+
 解决方法：	升级vue——loader版本
-	
+
 8、 @ ./src/main.js 4:0-24 13:21-24
 
 	 error  in ./src/App.vue?vue&type=style&index=0&lang=css&
@@ -57,7 +57,7 @@ TypeError: Cannot read property 'vue' of undefined
 	> #app {
 	|   font-family: 'Avenir', Helvetica, Arial, sans-serif;
 	|   -webkit-font-smoothing: antialiased;
-	
+
 解决方法：升级vue-style-loader
 
 9、BaseClient.js?e917:12 Uncaught TypeError: Cannot assign to read only property 'exports' of object '#<Object>'
@@ -71,7 +71,7 @@ TypeError: Cannot read property 'vue' of undefined
     at Module../node_modules/webpack-dev-server/client/clients/SockJSClient.js (app.js:2073)
     at __webpack_require__ (app.js:727)
     at fn (app.js:101)
-	
+
 解决方法：{
         test: /\.js$/,
         loader: 'babel-loader',
@@ -79,6 +79,22 @@ TypeError: Cannot read property 'vue' of undefined
         include: [resolve('src'), resolve('test')]
 },
 
+10、使用svg-sprite-loader 遇到的问题
+
+  发现项目中菜单的图片渲染用到的是icon-svg 这个组件 但怎么找都找不到这个组件
+
+解决办法：
+  添加：
+    {
+            test: /\.svg$/,
+            loader: 'svg-sprite-loader',
+            include: [resolve('src/icons')],
+            options: {
+              symbolId: 'icon-[name]'
+            }
+          },
+       并在另一个含有svg的配置中剔除svg的操作
+               exclude: [resolve('src/icons')],
 
 
 

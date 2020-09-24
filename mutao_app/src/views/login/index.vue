@@ -29,6 +29,7 @@
               </span>
             </el-input>
           </el-form-item>
+
         </div>
         <div v-show="!loginWay" >
           <el-form-item prop="phone">
@@ -51,6 +52,7 @@
           </el-form-item>
 
         </div>
+
         <el-form-item style="margin-bottom: 60px;text-align: center">
           <el-button style="width: 45%" type="primary" :loading="loading" @click.native.prevent="handleLogin">
             登录
@@ -116,6 +118,7 @@
 
 
       return {
+        codeUrl: "",
         computedTime:0,
         loginForm: {
           username: '',
@@ -153,6 +156,12 @@
 
     },
     methods: {
+      getCode() {
+        getCodeImg().then(res => {
+          this.codeUrl = "data:image/gif;base64," + res.img;
+          this.loginForm.uuid = res.uuid;
+        });
+      },
       showPwd() {
         if (this.pwdType === 'password') {
           this.pwdType = ''
@@ -161,9 +170,7 @@
         }
       },
       handleLogin() {
-        console.log('登陆开始！');
         this.$refs.loginForm.validate(valid => {
-          console.log(valid);
           if (valid) {
             // let isSupport = getSupport();
             // if(isSupport===undefined||isSupport==null){
@@ -171,15 +178,17 @@
             //   return;
             // }
             this.loading = true;
-            console.log('调用登陆接口！');
+            console.log('调用后端登陆接口！');
             this.$store.dispatch('Login', this.loginForm).then(() => {
               console.log('调用结果！');
               this.loading = false;
               setCookie("username", this.loginForm.username, 15);
               setCookie("password", this.loginForm.password, 15);
-              this.$router.push({path: ''})
+              this.$router.push({ path: this.redirect || "/home" })
             }).catch(() => {
+              console.log("哪里报错了");
               this.loading = false
+              this.getCode();
             })
           } else {
             console.log('参数验证不合法！');
@@ -239,5 +248,18 @@
     max-width: 100%;
     max-height: 100%;
     margin-top: 200px;
+  }
+  .login-code {
+    width: 35%;
+    height: 38px;
+    float: right;
+  }
+  .login-code.img {
+    cursor: pointer;
+    vertical-align: middle;
+  }
+
+  .login-code-img {
+    height: 38px;
   }
 </style>
