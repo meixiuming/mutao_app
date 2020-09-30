@@ -69,7 +69,7 @@
         <span class="font-title-large"><span class="color-main font-extra-large">添加我</span>回复<span
           class="color-main font-extra-large">小明哥好</span>获取好友申请</span>
         <br>
-        <img src="static/image/1600655921.png" width="160"
+        <img src="../../styles/image/1600655921.png" width="160"
              height="160" style="margin-top: 10px">
       </div>
       <span slot="footer" class="dialog-footer">
