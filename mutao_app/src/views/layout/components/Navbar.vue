@@ -33,6 +33,7 @@ export default {
     Hamburger
   },
   computed: {
+
   // 相当于
   // avatar() {
   //   return this.$store.state.avatar
@@ -47,9 +48,16 @@ export default {
       this.$store.dispatch('ToggleSideBar')
     },
     logout() {
-      this.$store.dispatch('LogOut').then(() => {
-        location.reload() // 为了重新实例化vue-router对象 避免bug
+      this.$confirm('确定注销并退出系统吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$store.dispatch('LogOut').then(() => {
+          location.reload() // 为了重新实例化vue-router对象 避免bug
+        })
       })
+
     }
   }
 }

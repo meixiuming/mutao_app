@@ -12,9 +12,14 @@ import '@/styles/index.scss' // global css
 import 'vant/lib/index.css'
 import Vant from 'vant'
 import store from'./store'
-Vue.use(Vant)
+import VCharts from 'v-charts'
+
+
 // 全局使用
+Vue.use(Vant)
 Vue.use(ElementUI, { locale });
+Vue.use(VCharts)
+
 Vue.config.productionTip = false
 
 
@@ -44,5 +49,6 @@ new Vue({
   router,
   store,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  render: h => h(App)
 })

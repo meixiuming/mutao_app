@@ -9,6 +9,7 @@ const app = {
     device: 'desktop'
   },
   mutations: {
+    //侧边栏是否隐藏
     TOGGLE_SIDEBAR: state => {
       if (state.sidebar.opened) {
         Cookies.set('sidebarStatus', 1)
