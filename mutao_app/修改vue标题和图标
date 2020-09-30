@@ -1,0 +1,39 @@
+修改vue项目的title左边的icon
+
+1、icon命名为favicon.ico放在项目根目录；
+
+2、在index.html中写入：
+
+<link rel="icon" href="./favicon.ico" type="image/x-icon">
+3、修改build下面webpack.prod.conf.js和webpack.dev.conf.js：
+
+修改：添加一行favicon: path.resolve('favicon.ico'), // 引入图片地址
+
+webpack.prod.conf.js：
+
+new HtmlWebpackPlugin({
+      filename: process.env.NODE_ENV === 'testing'
+        ? 'index.html'
+        : config.build.index,
+      template: 'index.html',
+      favicon: path.resolve('favicon.ico'), // 引入图片地址
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+        // more options:
+        // https://github.com/kangax/html-minifier#options-quick-reference
+      },
+      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+      chunksSortMode: 'dependency'
+    }),
+webpack.dev.conf.js：（看一下这个文件上面有没有const path = require('path')）
+
+new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'index.html',
+      inject: true,
+      favicon: path.resolve('favicon.ico'), // 引入图片地址
+    }),
+4、重新运行，重新打包
