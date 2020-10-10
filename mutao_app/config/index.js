@@ -9,6 +9,7 @@ module.exports = {
 
     // Paths
     assetsSubDirectory: 'static',
+    //调试使用
     assetsPublicPath: '/',
     proxyTable: {},
 
@@ -50,7 +51,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
 
     /**
      * Source Maps

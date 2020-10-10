@@ -96,6 +96,18 @@ TypeError: Cannot read property 'vue' of undefined
        并在另一个含有svg的配置中剔除svg的操作
                exclude: [resolve('src/icons')],
 
+11、使用命令npm run build打包vue项目之后提示 ：
+Tip: built files are meant to be served over an HTTP server.
+Opening index.html over file
+打包App的项目使用的是Cordova命令建立IOS项目，把npm run build的dist文件放到www文件，
+运行项目，打开app时index.html是空白页。
+解决办法：
+config的index.js的build配置是默认assetsPublicPath为“/”根路径，
+把assetsPublicPath修 改为“./”同一个路径重新打包即可。
+
+12.不会出现空白页后，图片显示不出来。
+解决办法：在build目录下的untils.js文件中
+ExtractTextPlugin方法中添加publicPath:’…/…/'就可以了。
 
 
 

@@ -1,25 +1,38 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import home from '@/views/home/index';
-import Layout  from '../views/layout/Layout'
+import Layout from '@/layout'
+
 
 Vue.use(Router)
 
 export const constantRouterMap = [
-  {path:'/', redirect:'home'},
-  {path: '/login', component: () => import('@/views/login/index'), meta: { hidden: true,title:"登陆页"}},
-  {path: '/register', component: () => import('@/views/register/index'), hidden: true},
-  {path: '/404', component: (resolve) => require(['@/views/404'], resolve), hidden: true},
-  {path: '/401', component: (resolve) => require(['@/views/401'], resolve), hidden: true},
   {
-    path: '/home',
+    path: '/redirect',
     component: Layout,
-    children: [{
-      path: 'home',
-      name: 'home',
-      component: () => import('@/views/home/index'),
-      meta: {title: '首页', icon: 'home'}
-    }]
+    hidden: true,
+    children: [
+      {
+        path: '/redirect/:path(.*)',
+        component: () => import('@/views/redirect/index')
+      }
+    ]
+  },
+  {path: '/login', component: () => import('@/views/login/index'), meta: { hidden: true,title:"登陆页"}},
+  // {path: '/register', component: () => import('@/views/register/index'), hidden: true},
+  {path: '/404', component: (resolve) => require(['@/views/error/404'], resolve), hidden: true},
+  {path: '/401', component: (resolve) => require(['@/views/error/401'], resolve), hidden: true},
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('@/views/dashboard/index'),
+        name: 'Dashboard',
+        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+      }
+    ]
   }
 ]
 export const asyncRouterMap = [
@@ -116,10 +129,7 @@ export const asyncRouterMap = [
         hidden: true
       }
     ]
-  }
-
-  ]
-
+  }]
 
 
 const createRouter = () => new Router({

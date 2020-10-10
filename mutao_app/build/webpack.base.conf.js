@@ -27,6 +27,9 @@ module.exports = {
       '@': resolve('src'),
     }
   },
+  performance: {
+    hints:false
+  },
   module: {
     rules: [
       {

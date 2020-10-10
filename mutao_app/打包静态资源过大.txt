@@ -1,0 +1,13 @@
+今天在学习webpack的时候,解决了CleanWebpackPlugin is not a constructor BUG之后,我再次进行了打包,打包成功,但是webpack提示了:
+WARNING in asset size limit: The following asset(s) exceed the recommended size limit (244 KiB). This can impact web performance.
+
+
+解决办法：
+  在webpack.base.js中添加
+
+module.exports = {
+
+    performance: {
+        hints:false
+     },
+}
